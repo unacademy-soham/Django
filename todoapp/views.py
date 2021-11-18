@@ -1,7 +1,9 @@
 from django.http import JsonResponse
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import api_view
 from .models import User, Todo
 from .serializers import UserSerializer, TodoSerializer
+import subprocess
 
 
 def hello(request):
@@ -20,3 +22,10 @@ class Todo(ModelViewSet):
     serializer_class = TodoSerializer
 
 
+@api_view(http_method_names=["POST"])
+def execute_code(request):
+    subprocess.call("g++ code/abcd.cpp")
+    subprocess.call("./a.exe")
+    return JsonResponse({
+        "message": "Done"
+    }, status=200)

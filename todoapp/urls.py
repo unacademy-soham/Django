@@ -7,7 +7,8 @@ router.register("user", views.UserViewSet)
 router.register("todo", views.Todo)
 
 urlpatterns = [
-    path("", views.hello, name="hello")
+    path("", views.hello, name="hello"),
+    path("execute", views.execute_code, name="execute")
 ]
 
 urlpatterns += router.urls
