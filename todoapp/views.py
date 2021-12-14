@@ -8,7 +8,7 @@ import subprocess
 
 def hello(request):
     return JsonResponse({
-        "message": "Hello welcome to todoapp"
+        "message": "Inside docker"
     }, status=200)
 
 
