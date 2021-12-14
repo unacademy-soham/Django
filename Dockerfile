@@ -3,11 +3,11 @@ FROM python:3.8.3-alpine
 WORKDIR /app
 
 RUN pip install --upgrade pip
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends gcc and-build-dependencies \
-    && rm -rf /var/lib/apt/lists/* \
-    && pip install cryptography \
-    && apt-get purge -y --auto-remove gcc and-build-dependencies
+RUN apk --update add python py-pip openssl ca-certificates py-openssl wget
+RUN apk --update add --virtual build-dependencies libffi-dev openssl-dev python-dev py-pip build-base \
+  && pip install --upgrade pip \
+  && pip install -r requirements.txt \
+  && apk del build-dependencies
 COPY ./requirements.txt /app
 RUN pip install -r requirements.txt
 
