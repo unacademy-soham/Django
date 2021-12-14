@@ -8,7 +8,7 @@ import subprocess
 
 def hello(request):
     return JsonResponse({
-        "message": "Inside docker"
+        "message": "Inside docker again"
     }, status=200)
 
 
