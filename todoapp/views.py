@@ -29,3 +29,12 @@ def execute_code(request):
     return JsonResponse({
         "message": "Done"
     }, status=200)
+
+
+@api_view(http_method_names=["POST"])
+def divide_numbers(request):
+    num1 = request.data["num1"]
+    num2 = request.data["num2"]
+    return JsonResponse({
+        "message": num1/num2
+    }, status=200)
