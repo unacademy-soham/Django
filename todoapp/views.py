@@ -4,11 +4,13 @@ from rest_framework.decorators import api_view
 from .models import User, Todo
 from .serializers import UserSerializer, TodoSerializer
 import subprocess
+import os
 
 
 def hello(request):
+    env = os.environ.get("ENV", "None")
     return JsonResponse({
-        "message": "Inside docker again"
+        "message": "Inside docker again. Environment: " + env
     }, status=200)
 
 
