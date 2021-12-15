@@ -10,7 +10,7 @@ import os
 def hello(request):
     env = os.environ.get("ENV", "None")
     return JsonResponse({
-        "message": "Inside docker again. Environment: " + env
+        "message": "Hello world. Environment: " + env
     }, status=200)
 
 
