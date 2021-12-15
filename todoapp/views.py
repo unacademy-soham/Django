@@ -10,7 +10,7 @@ import os
 def hello(request):
     env = os.environ.get("ENV", "None")
     return JsonResponse({
-        "message": "Hi we are learning bind mounts. Environment: " + env
+        "message": "Hi I am Soham. Environment: " + env
     }, status=200)
 
 
