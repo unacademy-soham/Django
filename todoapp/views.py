@@ -7,6 +7,7 @@ from .tasks import add, thumbnail_creator_task
 import uuid
 import subprocess
 import os
+from PIL import Image
 
 
 def hello(request):
@@ -48,10 +49,9 @@ def divide_numbers(request):
 @api_view(http_method_names=["POST"])
 def create_thumbnail(request):
     file = request.FILES.get("file")
-    file_id = uuid.uuid4()
-    with open("images/" + str(file_id) + ".jpg", "w") as f:
-        f.write(file)
-
+    file_id = str(uuid.uuid4())
+    image = Image(file)
+    image.save("images/" + file_id + ".jpg")
     thumbnail_creator_task.delay(file_id)
     return JsonResponse({
         "message": "Processing the file"
