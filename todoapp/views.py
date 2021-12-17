@@ -3,7 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import api_view
 from .models import User, Todo
 from .serializers import UserSerializer, TodoSerializer
-from .tasks import add
+from .tasks import add, thumbnail_creator_task
 import subprocess
 import os
 
@@ -41,4 +41,13 @@ def divide_numbers(request):
     add.delay(num1, num2)
     return JsonResponse({
         "message": "Successfully submitted"
+    }, status=200)
+
+
+@api_view(http_method_names=["POST"])
+def create_thumbnail(request):
+    file = request.FILES.get("file")
+    thumbnail_creator_task.delay(file)
+    return JsonResponse({
+        "message": "Processing the file"
     }, status=200)
