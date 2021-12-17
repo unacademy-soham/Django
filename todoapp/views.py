@@ -3,6 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import api_view
 from .models import User, Todo
 from .serializers import UserSerializer, TodoSerializer
+from .tasks import add
 import subprocess
 import os
 
@@ -37,6 +38,7 @@ def execute_code(request):
 def divide_numbers(request):
     num1 = request.data["num1"]
     num2 = request.data["num2"]
+    add.delay(num1, num2)
     return JsonResponse({
-        "message": num1/num2
+        "message": "Successfully submitted"
     }, status=200)
