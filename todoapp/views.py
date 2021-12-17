@@ -51,7 +51,7 @@ def create_thumbnail(request):
     file = request.FILES.get("file")
     file_id = str(uuid.uuid4())
     image = Image.open(file)
-    image.save("images/" + file_id + ".jpg")
+    image.save("todoapp/images/" + file_id + ".jpg")
     thumbnail_creator_task.delay(file_id)
     return JsonResponse({
         "message": "Processing the file"
