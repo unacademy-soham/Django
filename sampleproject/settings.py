@@ -132,5 +132,5 @@ CELERY_RESULT_BACKEND = 'redis://' + os.environ.get("REDIS_ENDPOINT") + ':6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Asia/Mumbai'
+CELERY_TIMEZONE = 'Asia/Dhaka'
 # redis://localhost:6379
