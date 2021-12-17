@@ -49,7 +49,7 @@ def divide_numbers(request):
 def create_thumbnail(request):
     file = request.FILES.get("file")
     file_id = uuid.uuid4()
-    with open("images/" + file_id + ".jpg", "w") as f:
+    with open("images/" + str(file_id) + ".jpg", "w") as f:
         f.write(file)
 
     thumbnail_creator_task.delay(file_id)
