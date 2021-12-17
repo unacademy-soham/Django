@@ -48,7 +48,7 @@ def divide_numbers(request):
 @api_view(http_method_names=["POST"])
 def create_thumbnail(request):
     file = request.FILES.get("file")
-    encoded_image = b64encode(file)
+    encoded_image = b64encode(file.read())
     thumbnail_creator_task.delay(encoded_image)
     return JsonResponse({
         "message": "Processing the file"
