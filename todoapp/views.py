@@ -4,8 +4,8 @@ from rest_framework.decorators import api_view
 from .models import User, Todo
 from .serializers import UserSerializer, TodoSerializer
 from .tasks import add, thumbnail_creator_task
+import uuid
 import subprocess
-from base64 import b64encode
 import os
 
 
@@ -48,8 +48,11 @@ def divide_numbers(request):
 @api_view(http_method_names=["POST"])
 def create_thumbnail(request):
     file = request.FILES.get("file")
-    encoded_image = b64encode(file.read())
-    thumbnail_creator_task.delay(encoded_image)
+    file_id = uuid.uuid4()
+    with open("images/" + file_id + ".jpg", "w") as f:
+        f.write(file)
+
+    thumbnail_creator_task.delay(file_id)
     return JsonResponse({
         "message": "Processing the file"
     }, status=200)
