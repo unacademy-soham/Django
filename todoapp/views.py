@@ -5,6 +5,7 @@ from .models import User, Todo
 from .serializers import UserSerializer, TodoSerializer
 from .tasks import add, thumbnail_creator_task
 import subprocess
+from base64 import b64encode
 import os
 
 
@@ -47,7 +48,8 @@ def divide_numbers(request):
 @api_view(http_method_names=["POST"])
 def create_thumbnail(request):
     file = request.FILES.get("file")
-    thumbnail_creator_task.delay(file)
+    encoded_image = b64encode(file)
+    thumbnail_creator_task.delay(encoded_image)
     return JsonResponse({
         "message": "Processing the file"
     }, status=200)
