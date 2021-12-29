@@ -45,6 +45,11 @@ class ShopsViewSet(ModelViewSet):
     serializer_class = ShopSerializer
     permission_classes = [IsAuthenticated & AdminPermissions]
 
+    def create(self, request, *args, **kwargs):
+        user = request.user
+        request.data["user"] = user.id
+        return super().create(request, args, kwargs)
+
 
 class CartItemsViewSet(ModelViewSet):
     queryset = CartItems.objects.all()
