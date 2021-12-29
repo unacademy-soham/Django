@@ -18,7 +18,7 @@ class AdminPermissions(BasePermission):
         # For cart user attribute is not available
         print(request.method in ["PATCH", "DELETE"])
         print(request.user.username)
-        print(type(obj) == type(Shops))
+        print(obj._meta == Shops._meta)
         print(type(Shops))
         print(obj._meta)
         print(obj.user.username == request.user.username)
