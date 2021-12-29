@@ -16,15 +16,17 @@ class AdminPermissions(BasePermission):
     def has_object_permission(self, request, view, obj):
         # For shop user attribute is available
         # For cart user attribute is not available
-        print(request.method)
+        print(request.method in ["PATCH", "DELETE"])
         print(request.user.username)
         print(type(obj))
         print(obj.user.username == request.user.username)
         if request.method in ["PATCH", "DELETE"]:
             if type(obj) == type(Shops):
+                print("Here inside")
                 if obj.user.username == request.user.username:
                     return True
                 else:
+                    print("Here inside else")
                     return False
             elif type(obj) == type(Items):
                 if obj.shop.user.username == request.user.username:

@@ -50,6 +50,10 @@ class ShopsViewSet(ModelViewSet):
         request.data["user"] = user.id
         return super().create(request, args, kwargs)
 
+    def partial_update(self, request, *args, **kwargs):
+        self.check_object_permissions(request, self.get_object())
+        return super().partial_update(request, args, kwargs)
+
 
 class CartItemsViewSet(ModelViewSet):
     queryset = CartItems.objects.all()
