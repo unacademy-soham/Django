@@ -1,16 +1,48 @@
 from rest_framework import serializers
-from .models import User, Todo
+from .models import Users, Shops, Items, Orders, CartItems, Reviews
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = Users
+        fields = ["username", "password", "email", "address", "contact_number", "is_admin"]
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = Users(
+            email=validated_data['email'],
+            username=validated_data['username']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
+
+
+class ShopSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Shops
         fields = "__all__"
 
 
-class TodoSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-
+class ItemSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Todo
+        model = Items
+        fields = "__all__"
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Orders
+        fields = "__all__"
+
+
+class CartItemsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItems
+        fields = "__all__"
+
+
+class ReviewsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reviews
         fields = "__all__"

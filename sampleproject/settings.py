@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'sampleproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ecommerce',
+        'USER': 'admin',
+        'PASSWORD': os.environ.get("DB_PASSWORD"),
+        'HOST': 'database-1.cdyivfjsrs5o.ap-south-1.rds.amazonaws.com',
+        'PORT': '3306',
     }
 }
 
@@ -132,4 +136,3 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Dhaka'
-# redis://localhost:6379

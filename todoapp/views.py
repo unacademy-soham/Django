@@ -1,58 +1,66 @@
 from django.http import JsonResponse
+from django.contrib.auth import login
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.decorators import api_view
-from .models import User, Todo
-from .serializers import UserSerializer, TodoSerializer
-from .tasks import add, thumbnail_creator_task
-import uuid
-import subprocess
-import os
-from PIL import Image
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from .models import Users, Shops, Items, CartItems, Orders, Reviews
+from .serializers import UserSerializer, ShopSerializer, CartItemsSerializer, \
+    ItemSerializer, OrderSerializer, ReviewsSerializer
+from knox.views import LoginView as KnoxLoginView
+from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 
 def hello(request):
-    env = os.environ.get("ENV", "None")
     return JsonResponse({
-        "message": "Hi I am Soham. Environment: " + env
+        "message": "Health check"
     }, status=200)
 
+
+class LoginView(KnoxLoginView):
+    permission_classes = (AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = AuthTokenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        login(request, user)
+        return super(LoginView, self).post(request, format=None)
 
 class UserViewSet(ModelViewSet):
-    queryset = User.objects.all()
+    queryset = Users.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    @permission_classes([AllowAny, ])
+    def create(self, request, *args, **kwargs):
+        return super().create(request, args, kwargs)
+
+    def list(self, request, *args, **kwargs):
+        user = request.user
+        return Response(self.get_serializer(user).data, status=200)
 
 
-class Todo(ModelViewSet):
-    queryset = Todo.objects.all()
-    serializer_class = TodoSerializer
+class ShopsViewSet(ModelViewSet):
+    queryset = Shops.objects.all()
+    serializer_class = ShopSerializer
 
 
-@api_view(http_method_names=["POST"])
-def execute_code(request):
-    subprocess.call("g++ code/abcd.cpp")
-    subprocess.call("./a.exe")
-    return JsonResponse({
-        "message": "Done"
-    }, status=200)
+class CartItemsViewSet(ModelViewSet):
+    queryset = CartItems.objects.all()
+    serializer_class = CartItemsSerializer
 
 
-@api_view(http_method_names=["POST"])
-def divide_numbers(request):
-    num1 = request.data["num1"]
-    num2 = request.data["num2"]
-    add.delay(num1, num2)
-    return JsonResponse({
-        "message": "Successfully submitted"
-    }, status=200)
+class ItemsViewSet(ModelViewSet):
+    queryset = Items.objects.all()
+    serializer_class = ItemSerializer
 
 
-@api_view(http_method_names=["POST"])
-def create_thumbnail(request):
-    file = request.FILES.get("file")
-    file_id = str(uuid.uuid4())
-    image = Image.open(file)
-    image.save("todoapp/images/" + file_id + ".jpg")
-    thumbnail_creator_task.delay(file_id)
-    return JsonResponse({
-        "message": "Processing the file"
-    }, status=200)
+class OrdersViewSet(ModelViewSet):
+    queryset = Orders.objects.all()
+    serializer_class = OrderSerializer
+
+
+class ReviewsViewSet(ModelViewSet):
+    queryset = Reviews.objects.all()
+    serializer_class = ReviewsSerializer
+
