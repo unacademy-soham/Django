@@ -19,6 +19,7 @@ class AdminPermissions(BasePermission):
         print(request.method)
         print(request.user.username)
         print(type(obj))
+        print(obj.user.username == request.user.username)
         if request.method in ["PATCH", "DELETE"]:
             if type(obj) == type(Shops):
                 if obj.user.username == request.user.username:
