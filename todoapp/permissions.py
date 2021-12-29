@@ -16,10 +16,10 @@ class AdminPermissions(BasePermission):
     def has_object_permission(self, request, view, obj):
         # For shop user attribute is available
         # For cart user attribute is not available
-        logger.info("Here")
-        logger.info("obj.__class___.__name__")
-        logger.info(obj.user.username == request.user.username)
-        logger.info(obj.user.username)
+        print("Here")
+        print("obj.__class___.__name__")
+        print(obj.user.username == request.user.username)
+        print(obj.user.username)
         if request.method in ["PATCH", "DELETE"]:
             if obj.__class__.__name__ == "Shop":
                 if obj.user.username == request.user.username:
