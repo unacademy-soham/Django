@@ -9,6 +9,7 @@ from .serializers import UserSerializer, ShopSerializer, CartItemsSerializer, \
 from .permissions import AdminPermissions, UserPermissions
 from knox.views import LoginView as KnoxLoginView
 from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.decorators import action
 
 
 def hello(request):
@@ -61,6 +62,16 @@ class ItemsViewSet(ModelViewSet):
     queryset = Items.objects.all()
     serializer_class = ItemSerializer
     permission_classes = [IsAuthenticated & AdminPermissions]
+
+    @action(["POST"], detail=True)
+    def upload(self, request, *args, **kwargs):
+        item = self.get_object()
+        print(item)
+        file = request.FILES.get("data")
+        print(file.name)
+        return Response({
+            "message": "Uploading the image"
+        }, status=200)
 
 
 class OrdersViewSet(ModelViewSet):
