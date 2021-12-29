@@ -1,5 +1,5 @@
 from rest_framework.permissions import BasePermission
-from .models import Users
+from .models import Users, Shops
 import logging
 
 logger = logging.getLogger("")
@@ -17,11 +17,11 @@ class AdminPermissions(BasePermission):
         # For shop user attribute is available
         # For cart user attribute is not available
         print("Here")
-        print(obj.__class___.__name__)
+        print(type(obj) == type(Shops))
         print(obj.user.username == request.user.username)
         print(obj.user.username)
         if request.method in ["PATCH", "DELETE"]:
-            if obj.__class__.__name__ == "Shop":
+            if type(obj) == type(Shops):
                 if obj.user.username == request.user.username:
                     return True
                 else:
