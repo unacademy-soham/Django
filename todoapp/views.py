@@ -31,7 +31,6 @@ class LoginView(KnoxLoginView):
 class UserViewSet(ModelViewSet):
     queryset = Users.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         return super().create(request, args, kwargs)
