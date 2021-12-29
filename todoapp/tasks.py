@@ -1,8 +1,5 @@
 from celery import shared_task
 from time import sleep
-from PIL import Image
-from base64 import b64decode
-
 
 @shared_task(name="first-task")
 def add(x, y):
@@ -10,9 +7,17 @@ def add(x, y):
     print(x+y)
 
 
-@shared_task(name="thumbnail_creator")
-def thumbnail_creator_task(file_id):
-    sleep(10)
-    pil_image = Image.open("todoapp/images/" + file_id + ".jpg")
-    pil_image.resize((100, 100))
-    pil_image.save("temp.jpg")
+@shared_task(name="image_uploader")
+def item_image_upload(file_name, item_id):
+    # Upload the image to s3. Make sure it is publicly available
+    # Get the public url for the image
+    # Update the ItemImage database with url and item_id
+    pass
+
+
+@shared_task(name="review_image_uploader")
+def review_image_upload(file_name, review_id):
+    # Upload the image to s3. Make sure it is publicly available
+    # Get the public url for the image
+    # Update the ItemImage database with url and item_id
+    pass
