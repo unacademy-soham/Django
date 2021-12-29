@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from .models import Users, Shops, Items, CartItems, Orders, Reviews
 from .serializers import UserSerializer, ShopSerializer, CartItemsSerializer, \
     ItemSerializer, OrderSerializer, ReviewsSerializer
+from .permissions import AdminPermissions
 from knox.views import LoginView as KnoxLoginView
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 
@@ -26,6 +27,7 @@ class LoginView(KnoxLoginView):
         login(request, user)
         return super(LoginView, self).post(request, format=None)
 
+
 class UserViewSet(ModelViewSet):
     queryset = Users.objects.all()
     serializer_class = UserSerializer
@@ -42,6 +44,7 @@ class UserViewSet(ModelViewSet):
 class ShopsViewSet(ModelViewSet):
     queryset = Shops.objects.all()
     serializer_class = ShopSerializer
+    permission_classes = [IsAuthenticated & AdminPermissions]
 
 
 class CartItemsViewSet(ModelViewSet):
@@ -52,6 +55,7 @@ class CartItemsViewSet(ModelViewSet):
 class ItemsViewSet(ModelViewSet):
     queryset = Items.objects.all()
     serializer_class = ItemSerializer
+    permission_classes = [IsAuthenticated & AdminPermissions]
 
 
 class OrdersViewSet(ModelViewSet):
