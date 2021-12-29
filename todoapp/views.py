@@ -31,7 +31,6 @@ class UserViewSet(ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
-    @permission_classes([AllowAny, ])
     def create(self, request, *args, **kwargs):
         return super().create(request, args, kwargs)
 

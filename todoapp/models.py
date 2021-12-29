@@ -31,13 +31,13 @@ class ItemImage(models.Model):
 
 class Orders(models.Model):
     invoice_number = models.CharField(max_length=30, null=False)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     shop = models.ForeignKey(Shops, on_delete=models.CASCADE)
 
 
 class OrderItems(models.Model):
     order = models.ForeignKey(Orders, on_delete=models.CASCADE)
-    item = models.ForeignKey(Items, on_delete=models.SET_NULL)
+    item = models.ForeignKey(Items, null=True, on_delete=models.SET_NULL)
 
 
 class CartItems(models.Model):
