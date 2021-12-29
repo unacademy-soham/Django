@@ -5,6 +5,14 @@ import logging
 logger = logging.getLogger("")
 
 
+class UserPermissions(BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+        if obj.username == request.user.username:
+            return True
+        return False
+
+
 class AdminPermissions(BasePermission):
 
     def has_permission(self, request, view):
